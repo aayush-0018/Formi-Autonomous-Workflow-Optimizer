@@ -23,29 +23,6 @@ Python 3.12 · `httpx` + `numpy` · one SQLite file per run · no other infrastr
 
 ![Formi Controller architecture](docs/images/architecture.png)
 
-```mermaid
-flowchart TD
-  SIM["Simulator (HTTP only, via simclient.py)<br/>event chunks · /workflows · /approvals · /config · /sim/advance · LLM suggest-fixes · prompt validation"]
-  ING["ingest.py<br/>exactly-once: aggregates + cursor in ONE transaction per chunk"]
-  DB[("SQLite state/&lt;scenario&gt;.db (WAL)<br/>cursor · aggregates · leads · config_versions<br/>proposals · decisions (AUDIT LOG) · wf_state · metrics")]
-  VIEWS["views.py (CLI, read-only)<br/>status · view · audit · log"]
-  BRAIN["planner.py: one Brain per workflow, every tick"]
-  INC["incidents.py<br/>validate, detect, fix, verify<br/>→ prompt_version"]
-  DID["callerid.py<br/>spread, quarantine, emergencies<br/>→ caller_id allocation"]
-  SCH["schedule.py<br/>which cohort in which hour<br/>→ hour_weights"]
-  EXP["experiments.py<br/>explore, ramp, promote, decay<br/>→ welcome / voice"]
-  COMP["compose ONE target config"]
-  GOV["governance.py<br/>the ONLY code that changes config<br/>state machine · budgets · timing"]
-
-  SIM -- event chunks --> ING -- aggregates + cursor --> DB
-  DB -- reads, safe while running --> VIEWS
-  DB -- live data + learned state --> BRAIN
-  BRAIN --> INC & DID & SCH & EXP --> COMP
-  COMP -- ops pass + approval pass --> GOV
-  GOV -- "POST /approvals · /apply · PUT /config" --> SIM
-  GOV -- writes proposals, decisions, versions --> DB
-```
-
 ### The components
 
 | Component | File | Responsibility |
@@ -166,6 +143,9 @@ scripts/crash_test.sh scenarios/public_02_incidents.yaml 5           # 5 random 
 scripts/load_test.sh 2 2                                             # public_03 at full daily rate (use `7 5` for the full run, ~4 GB disk)
 CONTROLLER_ABLATE=did,schedule,exp scripts/run_scenario.sh scenarios/public_02_incidents.yaml   # switch levers off
 ```
+
+The tests use [pytest](https://docs.pytest.org/en/stable/how-to/index.html). See its how-to guides for
+running a single test (`-k name`), showing output (`-s`) or stopping at the first failure (`-x`).
 
 ---
 
