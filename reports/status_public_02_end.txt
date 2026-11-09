@@ -1,0 +1,13 @@
+scenario public_02_incidents  ·  sim time D10 00:00  ·  controller starts: 1
+
+loop health (last simulated 24h)
+  ingest lag now          : 0 events behind the simulator
+  events ingested         : 13,703  (30,397 events/s while ingesting)
+  wall-clock per sim day  : 3 s   (ingest 0.5s · decide 1.7s · simulator 0.5s)
+  decisions               : 3 (0.1/h)
+  credits                 : 194 remaining, 0 spent in 24h
+  peak memory (RSS)       : 245 MB
+
+in-flight proposals: 0
+
+alerts in the last 24h: 0

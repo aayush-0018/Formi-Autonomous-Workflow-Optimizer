@@ -1,0 +1,22 @@
+AUDIT nw_renewal @ D6 16:15
+live config: v10, applied D6 15:45 by controller_approved; changed dims welcome_message
+
+WHY (the proposal, as sent)
+  proposal 51d92a-nw_renewal-optimise-0025 (optimise, via approval)
+  summary   : welcome: test W2 vs W1; remove W3
+  rationale : welcome_message=W3 effect reversed: +7.3% earlier → -9.3% in the last 2 days (DiD z=-2.2); novelty wore off, stop exposing customers to it | exploration: challengers capped at 10–20% each so a bad variant can cost at most a few tenths of a percent of engagement while we learn
+  impact    : 0.05   affected leads: 2421
+  dry run   : {"engagement": {"method": "population-average allocation change \u00d7 observed stratified lift per arm (vs control); arms with no data contribute 0 \u00b1 10%", "per_dim": {"welcome_message": {"W2": {"share_change": 0.0}, "W1": {"share_change": 0.2}, "W3": {"share_change": -0.2, "observed_rel_lift": 0.0297, "n_connected": 999}}, "voice": {"V2": {"share_change": 0.0}}}, "expected_rel_engagement_change": -0.0059, "ci90": [-0.0167, 0.0048]}}
+  evidence  : {"plan": {"experiments": {"welcome_message": {"control": "W1", "arms": {"W2": "ramped", "W3": "decayed"}, "promoted": {}}}, "schedule": {"feature": "age_band"}}, "primary_kpi": "engagement_rate", "expected_rel_change_primary": -0.0059}
+
+WHO
+  requested D6 13:00; approval apr_00016 decided D6 15:16 by the northwind_life approver (approved); applied D6 15:45 as v10
+
+DECISIONS THAT LED TO IT
+  D6 13:00 arm_dropped: welcome_message=W3 effect reversed: +7.3% earlier → -9.3% in the last 2 days (DiD z=-2.2); novelty wore off, stop exposing customers to it
+
+WHAT HAPPENED NEXT
+  before (v9):   3,825 dials  pickup  29.3%  engagement  56.0%  halluc flags 1.87%
+  under  (v10):   6,600 dials  pickup  29.2%  engagement  56.3%  halluc flags 1.61%   until D8 13:45 (v11 by controller_approved)
+  D8 10:00 arm_dropped: welcome_message=W2 effect reversed: +4.7% earlier → -13.9% in the last 2 days (DiD z=-2.5); novelty wore off, stop exposing customers to it
+  D8 13:45 applied: optimise: applied apr_00017 as v11

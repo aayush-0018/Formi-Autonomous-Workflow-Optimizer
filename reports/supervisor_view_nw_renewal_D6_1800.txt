@@ -1,0 +1,28 @@
+====================================================================================================
+nw_renewal  (northwind_life, life-insurance renewal premium reminder (persistency))  ·  D6 18:00
+objective: maximise engagement_rate  ·  guardrail: pickup_rate_max_drop 0.02  ·  live config v10
+====================================================================================================
+KPIs (never blended)
+  today      pickup  29.5%  engagement  56.9%  (3,600 dials)
+  yesterday  pickup  29.1%  engagement  53.9%  (3,600 dials)
+  history    pickup  27.2%  engagement  54.6%  (48,800 dials)   (pre-D0, business default config)
+
+WHAT WE NEED FROM YOU
+  nothing right now
+
+WHAT'S BEING TESTED / WHAT'S WINNING  (arm status = latest learned state; use `log` for history)
+  welcome_message: control W1  ·  live (default cohort) W1:80% W2:20%
+    W2   decayed            +1.2% vs control (z=0.4, n=1173)
+    W3   decayed            +3.0% vs control (z=0.91, n=999)
+  voice: control V2  ·  live (default cohort) V2:100%
+    V3   paused_supervisor  not enough data yet
+    V4   dropped            -26.0% vs control (z=-3.43, n=160)
+
+OPERATIONS
+  caller IDs live: D1:25% D2:25% D3:25% D4:25%
+  call-time: by age_band (4 groups)
+  cohorts: age_band=18-30, age_band=31-45, age_band=46-60, age_band=60+
+  supervisor-owned (we won't change): voice (rest of run)
+
+WHAT CHANGED TODAY
+  D6 15:45 v10 by controller_approved (apr_00016) welcome_message — welcome: test W2 vs W1; remove W3

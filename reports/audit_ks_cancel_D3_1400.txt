@@ -1,0 +1,26 @@
+AUDIT ks_cancel @ D3 14:00
+live config: v11, applied D3 13:00 by controller_approved; changed dims prompt_version
+
+WHY (the proposal, as sent)
+  proposal 51d92a-ks_cancel-incident_fix-0018 (incident_fix, via approval)
+  summary   : Safety fix: switch prompt P2 → P1 (fails validation)
+  rationale : Prompt P2: validation pass rate 0.937 < policy 0.97 (val_00001, n=300). Candidate P1 chosen as known-good prompt from our production records; validation pass rate 0.990. We will verify on live calls after apply and re-open if flags stay high. This does not undo the supervisor's other settings.
+  impact    : 0.9   affected leads: 3674
+  dry run   : {"method": "historical replay of the candidate prompt on this workflow", "candidate_history": {"connected": 20401, "flags": 317, "flag_rate": 0.0155, "engagement": 0.4992}, "current_prompt_live": {"source": "validation", "prompt": "P2", "validation_run_id": "val_00001", "pass_rate": 0.9367, "threshold": 0.97, "n": 300, "baseline_rate": 0.0152}, "validation": {"validation_run_id": "val_00002", "workflow_id": "ks_cancel", "prompt_version": "P1", "n": 300, "failures": 3, "pass_rate": 0.99, "ts": "2027-01-07T12:00:00+05:30", "credits_remaining": 194.0}}
+  evidence  : {"validation_run_id": "val_00002", "detection": {"source": "validation", "prompt": "P2", "validation_run_id": "val_00001", "pass_rate": 0.9367, "threshold": 0.97, "n": 300, "baseline_rate": 0.0152}}
+
+WHO
+  requested D3 12:00; approval apr_00011 decided D3 12:42 by the kestrel_finance approver (approved); applied D3 13:00 as v11
+
+DECISIONS THAT LED TO IT
+  D3 11:45 validation: validated live prompt P2: pass rate 0.937 (val_00001, policy min 0.97)
+  D3 11:45 incident_opened: live prompt P2 fails safety validation: pass rate 0.937 < policy 0.97 on 300 synthetic conversations
+  D3 12:00 validation: validated P1: pass rate 0.990 on 300 synthetic conversations (val_00002)
+  D3 12:00 incident: fix chosen: P2→P1 (known-good prompt from our production records); validation 0.990 ≥ 0.97+margin
+
+WHAT HAPPENED NEXT
+  before (v10):     600 dials  pickup  30.8%  engagement  43.8%  halluc flags 3.24%
+  under  (v11):   4,600 dials  pickup  25.6%  engagement  48.5%  halluc flags 1.36%   until D4 12:30 (v12 by controller_approved)
+  D3 16:00 incident_resolved: prompt P1 verified: flag rate 1.63% on 307 connected calls (baseline 1.52%); time to fix 4h15m
+  D3 16:00 winner: welcome_message=W2 beats W1 for everyone: +14.5% engagement (z=2.97 ≥ 2.88, n=549/3065) → promote with 20% holdout
+  D4 12:30 applied: optimise: applied apr_00012 as v12

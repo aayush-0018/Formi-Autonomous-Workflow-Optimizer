@@ -1,0 +1,25 @@
+# crash-recovery test — 2026-11-06T14:44:23Z — scenario public_02_incidents — 5 SIGKILLs
+kill #1: SIGKILL controller pid 66813 while the world was at 2027-01-05T13:00:00+05:30
+kill #2: SIGKILL controller pid 66935 while the world was at 2027-01-07T08:15:00+05:30
+kill #3: SIGKILL controller pid 66942 while the world was at 2027-01-08T14:00:00+05:30
+kill #4: SIGKILL controller pid 67078 while the world was at 2027-01-09T20:00:00+05:30
+final restart: running to completion
+controller finished; verifying invariants
+  [PASS] scenario finished — 2027-01-14T00:00:00+05:30
+  [PASS] controller was restarted — 6 starts in our audit trail
+  [PASS] no duplicate proposal ids on the server — 19 approvals
+  [PASS] every server approval is in our store (none lost) — []
+  [PASS] terminal states agree with the server — []
+  [PASS] no proposal left half-done — []
+  [PASS] nw_renewal: no proposal applied twice — 11 versions, 9 by controller
+  [PASS] nw_kyc: no proposal applied twice — 5 versions, 4 by controller
+  [PASS] ks_cancel: no proposal applied twice — 16 versions, 14 by controller
+  [PASS] no apply conflicts / lapses caused by restarts — conflicts=0 lapsed=0
+  [PASS] every call event counted exactly once — simulator 245,008 vs ours 245,008
+RESULT: ALL INVARIANTS HOLD
+| workflow | conclusion rate | Δ | pickup | Δ | engagement | Δ | engagement gap captured | hallucinated calls (base) |
+|---|---|---|---|---|---|---|---|---|
+| ks_cancel | 0.372 | +57.9% | 0.253 | +39.5% | 0.502 | +7.3% | 37% | 75 (348) |
+| nw_kyc | 0.442 | +18.2% | 0.283 | +20.6% | 0.590 | -3.0% | 0% | 32 (29) |
+| nw_renewal | 0.484 | +11.7% | 0.292 | +11.4% | 0.550 | -0.8% | 11% | 80 (54) |
+| ALL | 0.424 | +28.2% | 0.272 | +24.0% | 0.537 | +0.9% | 25% | 187 (431) |
