@@ -1,0 +1,7 @@
+{
+  "kestrel_finance": {
+    "earliest_request_hour": 11,
+    "max_requests_per_day": 2,
+    "source": "stakeholders/04 (Anita Desai, Kestrel ops supervisor): max two requests a day, never before 11:00. Stricter than policy, so we honour it for normal requests; incident/rollback requests may use the policy's remaining headroom."
+  }
+}
